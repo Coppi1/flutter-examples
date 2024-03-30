@@ -29,7 +29,7 @@ class Lista extends StatelessWidget {
           leading: Icon(Icons.music_note),
           title: Text("Slipknot"),
           tileColor: Color.fromARGB(255, 28, 188, 236),
-          subtitle: Text("Canta: Duality"),
+          subtitle: Text("Canta: Vermilion"),
         ),
       ),
     ]);
