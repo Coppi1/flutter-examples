@@ -1,3 +1,5 @@
+import 'package:colaprova_marinke/Screens/scr_teste.dart';
+import 'package:colaprova_marinke/Screens/tela_teste_outra.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,7 +29,7 @@ class _HomePageState extends State<HomePage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: <Widget>[
-            Text("Selecione a Cidade"),
+            const Text("Selecione a Cidade"),
             DropdownButton<String>(
               value: dropdownValue,
               icon: const Icon(Icons.arrow_downward),
@@ -53,7 +55,11 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Ação do botão
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const scr_teste(),
+                    ));
               },
               child: const Text('Clique aqui'),
             ),
@@ -78,10 +84,28 @@ class _HomePageState extends State<HomePage> {
                       DataCell(Text('Célula 3')),
                     ],
                   ),
+                  DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text('Célula 1')),
+                      DataCell(Text('Célula 2')),
+                      DataCell(Text('Célula 3')),
+                    ],
+                  ),
                   // Adicione mais linhas conforme necessário
                 ],
               ),
             ),
+            Expanded(
+                child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const teste_outro(),
+                    ));
+              },
+              child: const Text('Clique aqui'),
+            ))
           ],
         ),
       ),

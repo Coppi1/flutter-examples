@@ -13,7 +13,7 @@ class _scr_testeState extends State<scr_teste> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
-        title: Text("Teste passada"),
+        title: const Text("Teste passada"),
       )),
     );
   }
