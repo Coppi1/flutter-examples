@@ -116,7 +116,9 @@ class _TelaAdicionarPedidoState extends State<TelaAdicionarPedido> {
                       dataHora: _dataHora,
                       formaPagamento: _formaPagamento.nome,
                     );
-                    int id = await Database.instance.insert(pedido);
+                    // Corrigindo a chamada do método insert
+                    int id = await Database.instance
+                        .insert('pedidos' as Pedido, pedido.toMap());
                     print('inserted row: $id');
                     // Limpar os campos do formulário
                     _formKey.currentState!.reset();

@@ -1,7 +1,6 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/pedido.dart';
-import '../models/formaPagamento.dart';
+
 
 class Database {
  static final _databaseName = "pedidos.db";
@@ -9,11 +8,11 @@ class Database {
 
  static final table = 'pedidos';
 
- static final columnId = 'id';
- static final columnNomeProduto = 'nomeProduto';
- static final columnQuantidade = 'quantidade';
- static final columnValorTotal = 'valorTotal';
- static final columnObservacao = 'observacao';
+ static const columnId = 'id';
+ static const columnNomeProduto = 'nomeProduto';
+ static const columnQuantidade = 'quantidade';
+ static const columnValorTotal = 'valorTotal';
+ static const columnObservacao = 'observacao';
  static const columnDataHora = 'dataHora';
  static const columnFormaPagamento = 'formaPagamento';
 
