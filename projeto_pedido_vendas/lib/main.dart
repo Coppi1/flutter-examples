@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import './models/telaAdicionarPedido.dart';
 
 void main() {
- runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
- @override
- Widget build(BuildContext context) {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Anotar Pedidos',
       theme: ThemeData(
@@ -15,5 +17,5 @@ class MyApp extends StatelessWidget {
       ),
       home: TelaAdicionarPedido(),
     );
- }
+  }
 }

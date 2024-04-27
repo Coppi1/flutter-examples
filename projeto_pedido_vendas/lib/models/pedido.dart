@@ -12,6 +12,8 @@ class Pedido {
     required this.quantidade,
     required this.valorTotal,
     required this.observacao,
-    required this.dataHora,
+    required this.dataHora, required formaPagamento,
  });
+
+  toMap() {}
 }

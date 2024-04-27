@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'pedido.dart';
 import './formaPagamento.dart';
+import './telaResumoPedido.dart';
+import '../dataBase/dataBase.dart';
 
 class TelaAdicionarPedido extends StatefulWidget {
   const TelaAdicionarPedido({super.key});
@@ -67,18 +69,14 @@ class _TelaAdicionarPedidoState extends State<TelaAdicionarPedido> {
                 decoration: const InputDecoration(labelText: 'Observação'),
                 onSaved: (value) => _observacao = value!,
               ),
-              const SizedBox(
-                  height: 20), // Aumente o valor para criar mais espaço
-              const Divider(color: Colors.black), // Risco suave
-              const SizedBox(
-                  height:
-                      20), // Aumente o valor para criar mais espaço entre o risco suave e o título
+              const SizedBox(height: 20),
+              const Divider(color: Colors.grey),
+              const SizedBox(height: 20),
               const Text('Forma de Pagamento',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 10), // Espaço entre o título e o dropdown
+              const SizedBox(height: 10),
               SizedBox(
-                width: MediaQuery.of(context).size.width *
-                    0.9, // Define a largura do dropdown
+                width: MediaQuery.of(context).size.width * 0.9,
                 child: DropdownButton<FormaPagamento>(
                   value: _formaPagamento,
                   icon: const Icon(Icons.arrow_downward),
@@ -104,14 +102,46 @@ class _TelaAdicionarPedidoState extends State<TelaAdicionarPedido> {
                   }).toList(),
                 ),
               ),
-              const SizedBox(height: 20), // Espaço abaixo do dropdown
+              const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Aqui você pode adicionar a lógica para salvar o pedido
-                    // Por exemplo, adicionar o pedido a uma lista ou salvar em um banco de dados
-                    Navigator.pop(context);
+                    Pedido pedido = Pedido(
+                      id: DateTime.now().millisecondsSinceEpoch,
+                      nomeProduto: _nomeProduto,
+                      quantidade: _quantidade,
+                      valorTotal: _valorTotal,
+                      observacao: _observacao,
+                      dataHora: _dataHora,
+                      formaPagamento: _formaPagamento.nome,
+                    );
+                    int id = await Database.instance.insert(pedido);
+                    print('inserted row: $id');
+                    // Limpar os campos do formulário
+                    _formKey.currentState!.reset();
+                    // Redefinir as variáveis de estado
+                    setState(() {
+                      _nomeProduto = '';
+                      _quantidade = 0;
+                      _valorTotal = 0.0;
+                      _observacao = '';
+                      _formaPagamento = FormaPagamento.cartaoDebito;
+                    });
+                    // Navegue para a tela de resumo de pedido
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TelaResumoPedido(
+                          nomeProduto: _nomeProduto,
+                          quantidade: _quantidade,
+                          valorTotal: _valorTotal,
+                          observacao: _observacao,
+                          dataHora: _dataHora,
+                          formaPagamento: _formaPagamento,
+                        ),
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
