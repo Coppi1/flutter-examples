@@ -44,16 +44,12 @@ class Conexao {
       },
       version: 1,
     );
+  }
 
-    // Future<Database> getDatabase() async {
-    //   // instancia o db na primeira vez que for acessado
-    //   return openDatabase(
-    //     join(await getDatabasesPath(), _dbname),
-    //     onCreate: (db, version) {
-    //       return db.execute(_sqlScript);
-    //     },
-    //     version: 1,
-    //   );
-    // }
+  Future<bool> tableExists(String tableName) async {
+    final db = await Conexao.instance.database;
+    final result = await db
+        .query('sqlite_master', where: 'name = ?', whereArgs: [tableName]);
+    return result.isNotEmpty;
   }
 }

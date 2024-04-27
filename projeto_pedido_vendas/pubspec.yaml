@@ -1,10 +1,10 @@
 name: projeto_pedido_vendas
 description: "Projeto Academico para Emissão de Pedidos."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.2.6 <4.0.0'
+  sdk: ">=3.2.6 <4.0.0"
 
 dependencies:
   flutter:

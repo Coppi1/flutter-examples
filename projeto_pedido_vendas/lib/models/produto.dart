@@ -43,17 +43,3 @@ class Produto {
     };
   }
 }
-
-// Future<List<Produto>> carregarProdutos() async {
-//   //carregar lista de produtos da api em http://localhost:8080/produto
-//   final response = await http.get(Uri.parse('http://$address:8080/produto'));
-//   if (response.statusCode == 200) {
-//     final List<dynamic> produtosJson =
-//         json.decode(utf8.decode(response.bodyBytes));
-//     final List<Produto> produtos =
-//         produtosJson.map((json) => Produto.fromJson(json)).toList();
-//     return produtos;
-//   } else {
-//     throw Exception('Falha ao carregar os produtos');
-//   }
-// }
