@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_pedido_vendas/dtos/cliente_dto.dart'; // Importe o DTO do cliente
-import 'package:projeto_pedido_vendas/dtos/pedido_dto.dart'; // Importe o DTO do pedido
-import 'package:projeto_pedido_vendas/dao/cliente_dao.dart'; // Importe o DAO do cliente
-import 'package:projeto_pedido_vendas/dao/pedido_dao.dart'; // Importe o DAO do pedido
 
 class PedidoEmitirPage extends StatefulWidget {
   @override

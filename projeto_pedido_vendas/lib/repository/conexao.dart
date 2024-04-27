@@ -20,6 +20,7 @@ class Conexao {
   //singleton
   Conexao._privateConstructor();
   static final Conexao instance = Conexao._privateConstructor();
+
   // tem somente uma referência ao banco de dados - com safenull
   static Database? _database;
 
