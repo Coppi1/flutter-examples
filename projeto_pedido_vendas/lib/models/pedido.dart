@@ -1,33 +1,21 @@
-import 'package:appsupreagro/models/cliente.dart';
-import 'package:appsupreagro/models/empresa.dart';
-import 'package:appsupreagro/models/forma_pagamento.dart';
-import 'package:appsupreagro/models/produto.dart';
-import 'package:appsupreagro/models/produto_saida.dart';
-import 'package:appsupreagro/models/usuario.dart';
-import 'package:appsupreagro/util/jwtHttp.dart';
-import 'package:logger/logger.dart';
-
-import '../util/const.dart';
+import 'package:projeto_pedido_vendas/models/produto.dart';
 
 class Pedido {
   String id;
-  // Cliente? cliente;
   Map<dynamic, int> produtos;
   DateTime dataPedido;
   String observacao;
-  // FormaPagamento formaPagamento;
+  String formaPagamento;
   bool? sincronizado;
 
   Pedido({
     required this.id,
-
-    //this.cliente,
     required this.produtos,
     required this.dataPedido,
     required this.observacao,
-    // required this.formaPagamento,
+    required this.formaPagamento,
   });
-  // toJson
+
   Map<String, dynamic> toJson() {
     List<Produto> produtosList = [];
     produtos.forEach((key, value) {
@@ -37,44 +25,10 @@ class Pedido {
     });
     return {
       'id': id,
-      'cliente': (cliente != null) ? cliente?.toJson() : null,
-      'usuario': usuario.toJson(),
-      'empresa': empresa.toJson(),
       'produtos': produtosList.map((e) => e.toJson()).toList(),
       'dataPedido': dataPedido.toIso8601String(),
-      'dataEntrega': dataEntrega.toIso8601String(),
       'observacao': observacao,
-      'formaPagamento': formaPagamento.toJson(),
-      'dataPagamento': dataPagamento.toIso8601String(),
-      'cpfClienteNovo': cpfClienteNovo ?? '',
-      'nomeClienteNovo': nomeClienteNovo ?? '',
-      'enderecoClienteNovo': enderecoClienteNovo ?? '',
-      'numeroClienteNovo': numeroClienteNovo ?? '',
-      'sincronizado': sincronizado,
-      //'saidaStatus': saidaStatus.toJson(),
-    };
-  }
-
-  Map<String, dynamic> toSyncJson() {
-    List<ProdutoSaida> produtosList = [];
-    produtos.forEach((key, value) {
-      produtosList.add(ProdutoSaida.fromProduto(key, value.toDouble()));
-    });
-    return {
-      'id': id,
-      'cliente': (cliente != null) ? cliente?.toJson() : null,
-      'usuario': usuario.toJson(),
-      'empresa': empresa.toJson(),
-      'produtos': produtosList.map((e) => e.toJson()).toList(),
-      'dataPedido': dataPedido.toIso8601String(),
-      'dataEntrega': dataEntrega.toIso8601String(),
-      'observacao': observacao,
-      'formaPagamento': formaPagamento.toJson(),
-      'dataPagamento': dataPagamento.toIso8601String(),
-      'cpfClienteNovo': cpfClienteNovo!.replaceAll(".", "").replaceAll("-", ""),
-      'nomeClienteNovo': nomeClienteNovo ?? '',
-      'enderecoClienteNovo': enderecoClienteNovo ?? '',
-      'numeroClienteNovo': numeroClienteNovo ?? '',
+      'formaPagamento': formaPagamento,
       'sincronizado': sincronizado,
     };
   }
@@ -99,24 +53,10 @@ class Pedido {
 
     return Pedido(
       id: json['id'] ?? "",
-      cliente: (json['cliente'] != null && json['cliente']['id'] != null)
-          ? Cliente.fromJson(json['cliente'])
-          : null,
-
-      usuario: Usuario.fromJson(json['usuario']),
-      empresa: Empresa.fromJson(json['empresa']),
-
       produtos: produtosQuantidades,
       dataPedido: DateTime.parse(json['dataPedido']),
-      dataEntrega: DateTime.parse(json['dataEntrega']),
       observacao: json['observacao'],
-      formaPagamento: FormaPagamento.fromJson(json['formaPagamento']),
-      dataPagamento: DateTime.parse(json['dataPagamento']),
-      cpfClienteNovo: json['cpfClienteNovo'] ?? '',
-      nomeClienteNovo: json['nomeClienteNovo'] ?? '',
-      enderecoClienteNovo: json['enderecoClienteNovo'] ?? '',
-      numeroClienteNovo: json['numeroClienteNovo'] ?? '',
-      sincronizado: json['sincronizado'] ?? false,
+      formaPagamento: json['formaPagamento'],
       //saidaStatus: SaidaStatus.fromJson(json['saidaStatus']),
     );
   }
@@ -124,26 +64,9 @@ class Pedido {
   double getValorPedido() {
     double valorPedido = 0.0;
     produtos.forEach((key, value) {
-      double valorproduto = (key.valorSelecionado != null)
-          ? key.valorSelecionado!
-          : key.valorCheio;
+      double valorproduto = (key.valor != null) ? key.valor! : key.valor;
       valorPedido += valorproduto * value;
     });
     return valorPedido;
   }
-}
-
-//enviar pedido para o servidor em http://localhost:8080/pedido
-Future<bool> enviarPedido(Pedido pedido) async {
-  Logger().i(pedido.toSyncJson());
-  final response =
-      await http.post('http://$address:8080/pedido', pedido.toSyncJson());
-  if (response.statusCode == 200) {
-    Logger().i('Pedido enviado com sucesso');
-  } else {
-    Logger().e('Erro ao enviar pedido');
-    Logger().e(response.body);
-    return false;
-  }
-  return true;
 }

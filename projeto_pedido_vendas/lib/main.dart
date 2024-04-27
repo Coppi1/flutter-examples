@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_pedido_vendas/pages/pedido_emitir.dart';
+import 'package:projeto_pedido_vendas/pages/pedido_emitirteste.dart';
 
 void main() {
   runApp(const MainApp());
@@ -11,7 +11,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Pedido(),
+      home: emitirPedido(),
     );
   }
 }
