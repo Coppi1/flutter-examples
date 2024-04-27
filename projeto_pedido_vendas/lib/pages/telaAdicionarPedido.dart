@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'pedido.dart';
-import './formaPagamento.dart';
-import './telaResumoPedido.dart';
+import '../models/pedidoModel.dart';
+import '../models/formaPagamento.dart';
+import 'telaResumoPedido.dart';
 import '../dataBase/dataBase.dart';
 
 class TelaAdicionarPedido extends StatefulWidget {

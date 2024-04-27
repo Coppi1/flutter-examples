@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './formaPagamento.dart';
+import '../models/formaPagamento.dart';
 
 class TelaResumoPedido extends StatelessWidget {
   final String nomeProduto;

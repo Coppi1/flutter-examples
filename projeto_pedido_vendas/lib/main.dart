@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './models/telaAdicionarPedido.dart';
+import 'pages/telaAdicionarPedido.dart';
 
 void main() {
   runApp(const MyApp());
