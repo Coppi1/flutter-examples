@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import './models/telaAdicionarPedido.dart';
+import 'package:projeto_pedido_vendas/pages/pedido_emitir.dart';
+import 'package:projeto_pedido_vendas/util/initialize_database.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDatabase();
+  runApp(MainApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Anotar Pedidos',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-      ),
-      home: TelaAdicionarPedido(),
+      home: PedidoEmitirPage(),
     );
   }
 }

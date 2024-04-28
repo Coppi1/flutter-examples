@@ -1,116 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_pedido_vendas/dtos/cliente_dto.dart';
+import 'package:projeto_pedido_vendas/dtos/pedido_dto.dart';
+import 'package:projeto_pedido_vendas/models/cliente.dart';
+import 'package:projeto_pedido_vendas/models/vendedor.dart';
+import 'package:projeto_pedido_vendas/repository/cliente_dao.dart';
+import 'package:projeto_pedido_vendas/repository/pedido_dao.dart';
 
-class Pedido extends StatefulWidget {
-  const Pedido({super.key});
-
+class PedidoEmitirPage extends StatefulWidget {
   @override
-  _PedidoState createState() => _PedidoState();
+  _PedidoEmitirPageState createState() => _PedidoEmitirPageState();
 }
 
-class _PedidoState extends State<Pedido> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _produtoController = TextEditingController();
-  final TextEditingController _quantidadeController = TextEditingController();
-  final TextEditingController _unidadeController = TextEditingController();
-  final TextEditingController _valorController = TextEditingController();
-  final TextEditingController _observacoesController = TextEditingController();
-  final TextEditingController _clienteNomeController = TextEditingController();
-  final TextEditingController _vendedorController =
-      TextEditingController(); // Você pode preencher este campo com o usuário logado
+class _PedidoEmitirPageState extends State<PedidoEmitirPage> {
+  final ClienteDAO _clienteDAO = ClienteDAO(); // Instância do DAO do cliente
+  ClienteDTO? _clienteSelecionado; // Cliente selecionado no dropdown
+  List<ClienteDTO> _clientes = []; // Lista de clientes
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadClientes();
+  }
+
+  void _loadClientes() async {
+    // Supondo que _clienteDAO.selectAll() retorna Future<List<Cliente>>
+    List<Cliente> clientes = await _clienteDAO.selectAll();
+
+    // Converte cada Cliente em um ClienteDTO
+    List<ClienteDTO> clientesDTO =
+        clientes.map((cliente) => ClienteDTO.fromCliente(cliente)).toList();
+
+    // Atualiza o estado da aplicação com a lista de clientes DTO
+    setState(() {
+      _clientes = clientesDTO;
+    });
+  }
+
+  // Criar um novo cliente
+  ClienteDTO novoCliente = ClienteDTO(
+    nome: 'João Silva',
+    endereco: 'Rua das Flores, 123',
+    cidade: 'São Paulo',
+    nmrCpfCnpj: '123.456.789-00',
+    vendedor: Vendedor(
+        id: 1,
+        nome: 'Vendedor 1'), // Supondo que você tenha um vendedor com ID 1
+  );
 
   @override
   Widget build(BuildContext context) {
+    if (_clientes.isEmpty) {
+      return Center(child: Text('Nenhum cliente disponível.'));
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Emitir Pedido'),
+        title: Text('Emitir Pedido'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              TextFormField(
-                controller: _produtoController,
-                decoration: const InputDecoration(
-                  labelText: 'Produto',
-                ),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Por favor, insira o nome do produto';
-                  }
-                  return null;
-                },
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            DropdownButtonFormField<ClienteDTO>(
+              value: _clienteSelecionado,
+              onChanged: (ClienteDTO? cliente) {
+                setState(() {
+                  _clienteSelecionado = cliente;
+                });
+              },
+              items: _clientes.map((ClienteDTO cliente) {
+                return DropdownMenuItem<ClienteDTO>(
+                  value: cliente,
+                  child: Text(cliente.nome ?? ''),
+                );
+              }).toList(),
+              decoration: InputDecoration(
+                labelText: 'Cliente',
               ),
-              TextFormField(
-                controller: _quantidadeController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Quantidade',
-                ),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Por favor, insira a quantidade';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _unidadeController,
-                decoration: const InputDecoration(
-                  labelText: 'Unidade',
-                ),
-              ),
-              TextFormField(
-                controller: _valorController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Valor',
-                ),
-              ),
-              TextFormField(
-                controller: _observacoesController,
-                decoration: const InputDecoration(
-                  labelText: 'Observações do Pedido',
-                ),
-              ),
-              TextFormField(
-                controller: _clienteNomeController,
-                decoration: const InputDecoration(
-                  labelText: 'Nome do Cliente',
-                ),
-              ),
-              TextFormField(
-                controller: _vendedorController,
-                decoration: const InputDecoration(
-                  labelText: 'Vendedor',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Processar o pedido aqui
-                      String produto = _produtoController.text;
-                      int quantidade = int.parse(_quantidadeController.text);
-                      String unidade = _unidadeController.text;
-                      double valor = double.parse(_valorController.text);
-                      String observacoes = _observacoesController.text;
-                      String clienteNome = _clienteNomeController.text;
-                      String vendedor = _vendedorController.text;
-                      // Aqui você pode fazer o que quiser com os dados do formulário
-                      print(
-                          'Produto: $produto, Quantidade: $quantidade, Unidade: $unidade, Valor: $valor, Observações: $observacoes, Cliente: $clienteNome, Vendedor: $vendedor');
-                      // Você pode adicionar lógica para enviar o pedido para algum lugar
-                    }
-                  },
-                  child: const Text('Emitir Pedido'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
