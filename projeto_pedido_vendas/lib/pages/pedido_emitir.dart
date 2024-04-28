@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_pedido_vendas/dtos/cliente_dto.dart';
-import 'package:projeto_pedido_vendas/dtos/pedido_dto.dart';
 import 'package:projeto_pedido_vendas/models/cliente.dart';
-import 'package:projeto_pedido_vendas/models/vendedor.dart';
 import 'package:projeto_pedido_vendas/repository/cliente_dao.dart';
-import 'package:projeto_pedido_vendas/repository/pedido_dao.dart';
 
 class PedidoEmitirPage extends StatefulWidget {
+  const PedidoEmitirPage({super.key});
+
   @override
   _PedidoEmitirPageState createState() => _PedidoEmitirPageState();
 }
@@ -19,11 +18,13 @@ class _PedidoEmitirPageState extends State<PedidoEmitirPage> {
   @override
   void initState() {
     super.initState();
-
     _loadClientes();
   }
 
   void _loadClientes() async {
+    // Limpa a lista antes de adicionar novos dados
+    _clientes.clear();
+
     // Supondo que _clienteDAO.selectAll() retorna Future<List<Cliente>>
     List<Cliente> clientes = await _clienteDAO.selectAll();
 
@@ -37,29 +38,18 @@ class _PedidoEmitirPageState extends State<PedidoEmitirPage> {
     });
   }
 
-  // Criar um novo cliente
-  ClienteDTO novoCliente = ClienteDTO(
-    nome: 'João Silva',
-    endereco: 'Rua das Flores, 123',
-    cidade: 'São Paulo',
-    nmrCpfCnpj: '123.456.789-00',
-    vendedor: Vendedor(
-        id: 1,
-        nome: 'Vendedor 1'), // Supondo que você tenha um vendedor com ID 1
-  );
-
   @override
   Widget build(BuildContext context) {
     if (_clientes.isEmpty) {
-      return Center(child: Text('Nenhum cliente disponível.'));
+      return const Center(child: Text('Nenhum cliente disponível.'));
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Emitir Pedido'),
+        title: const Text('Emitir Pedido'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -76,7 +66,7 @@ class _PedidoEmitirPageState extends State<PedidoEmitirPage> {
                   child: Text(cliente.nome ?? ''),
                 );
               }).toList(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Cliente',
               ),
             ),
