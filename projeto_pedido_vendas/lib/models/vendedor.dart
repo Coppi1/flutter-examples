@@ -1,33 +1,19 @@
-import 'dart:convert';
-
 class Vendedor {
-  int id;
-  String nome;
+ String? id;
+ String nome;
+ String telefone;
 
-  Vendedor({required this.id, required this.nome});
+ Vendedor({
+    this.id,
+    required this.nome,
+    required this.telefone,
+ });
 
-  factory Vendedor.fromJson(Map<String, dynamic> json) => Vendedor(
-        id: json['id'],
-        nome: json['nome'],
-      );
-
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'nome': nome,
-      };
+ Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'nome': nome,
+      'telefone': telefone,
+    };
+ }
 }
-
-// Future<List<Vendedor>> carregarVendedores() async {
-//   final response = await http.get(Uri.parse('http://$address:8080/vendedor'));
-
-//   if (response.statusCode == 200) {
-//     final List<dynamic> vendedoresJson =
-//         json.decode(utf8.decode(response.bodyBytes));
-//     final List<Vendedor> vendedores =
-//         vendedoresJson.map((json) => Vendedor.fromJson(json)).toList();
-//     return vendedores;
-//   } else {
-//     throw Exception('Falha ao carregar os vendedores');
-//   }
-// }
-
