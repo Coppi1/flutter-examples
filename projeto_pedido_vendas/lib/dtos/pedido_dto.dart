@@ -1,13 +1,15 @@
+import 'package:projeto_pedido_vendas/dtos/cliente_dto.dart';
 import 'package:projeto_pedido_vendas/dtos/pedido_validate_mixing.dart';
+import 'package:projeto_pedido_vendas/models/cliente.dart';
 import 'package:projeto_pedido_vendas/models/pedido.dart';
 
 class PedidoDTO with PedidoValidate {
-  String? id;
+  int? id;
   DateTime dataPedido;
   String observacao;
   String formaPagamento;
   bool? sincronizado;
-  Map<dynamic, int>? produtos;
+  Map<dynamic, dynamic>? produtos;
 
   PedidoDTO({
     this.id,
@@ -17,18 +19,6 @@ class PedidoDTO with PedidoValidate {
     this.produtos,
   });
 
-  // Método para converter de DTO para Entidade
-  Pedido toEntity() {
-    return Pedido(
-      id: id ?? '',
-      dataPedido: dataPedido,
-      observacao: observacao,
-      formaPagamento: formaPagamento,
-      produtos:
-          produtos, // fazer conversores para transformar a lista mencionada, somente com o campo nome do produto
-    );
-  }
-
   // Método para converter de JSON para DTO
   factory PedidoDTO.fromJson(Map<String, dynamic> json) {
     return PedidoDTO(
@@ -37,7 +27,7 @@ class PedidoDTO with PedidoValidate {
       observacao: json['observacao'] ?? '',
       formaPagamento: json['formaPagamento'] ?? '',
       produtos: (json['produtos'] as Map<dynamic, dynamic>?)
-          ?.map<dynamic, int>((key, value) => MapEntry(key, value)),
+          ?.map<dynamic, int>((key, value) => MapEntry(key, value as int)),
     );
   }
 
@@ -49,7 +39,7 @@ class PedidoDTO with PedidoValidate {
       'observacao': observacao,
       'formaPagamento': formaPagamento,
       'sincronizado': sincronizado,
-      'produtos': produtos,
+      'produtos': produtos ?? {}, // Fornece um mapa vazio como valor padrão
     };
   }
 

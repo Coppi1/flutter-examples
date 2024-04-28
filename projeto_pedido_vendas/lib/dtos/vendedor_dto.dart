@@ -1,45 +1,40 @@
 import 'package:projeto_pedido_vendas/models/vendedor.dart';
 
 class VendedorDTO {
-  String? id;
-  String nome;
-  String telefone;
+  int? id;
+  String? nome;
 
   VendedorDTO({
     this.id,
-    required this.nome,
-    required this.telefone,
+    this.nome,
   });
 
-  // Método para converter de DTO para Entidade
-  Vendedor toEntity() {
-    return Vendedor(
-      id: id,
-      nome: nome,
-      telefone: telefone,
-    );
-  }
-
-  // Método para converter de JSON para DTO
-  factory VendedorDTO.fromJson(Map<String, dynamic> json) {
-    return VendedorDTO(
-      id: json['id'] as String?,
-      nome: json['nome'] as String,
-      telefone: json['telefone'] as String,
-    );
-  }
-
-  // Método para converter de DTO para Map
+  // Método para converter de VendedorDTO para Map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'nome': nome,
-      'telefone': telefone,
     };
+  }
+
+  // Método para converter de JSON para VendedorDTO
+  factory VendedorDTO.fromJson(Map<String, dynamic> json) {
+    return VendedorDTO(
+      id: json['id'],
+      nome: json['nome'],
+    );
+  }
+
+  // Método para converter de Vendedor para VendedorDTO
+  static VendedorDTO fromVendedor(Vendedor vendedor) {
+    return VendedorDTO(
+      id: vendedor.id,
+      nome: vendedor.nome,
+    );
   }
 
   @override
   String toString() {
-    return 'VendedorDTO(id: $id, nome: $nome, telefone: $telefone)';
+    return 'VendedorDTO(id: $id, nome: $nome)';
   }
 }

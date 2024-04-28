@@ -1,19 +1,22 @@
+import 'dart:convert';
+
 class Vendedor {
- String? id;
- String nome;
- String telefone;
+  int? id;
+  String? nome;
 
- Vendedor({
-    this.id,
-    required this.nome,
-    required this.telefone,
- });
+  Vendedor({this.id, this.nome});
 
- Map<String, Object?> toMap() {
+  factory Vendedor.fromJson(Map<String, dynamic> json) {
+    return Vendedor(
+      id: json["id"],
+      nome: json['nome'],
+    );
+  }
+
+  Map<String, dynamic> fromJson() {
     return {
       'id': id,
       'nome': nome,
-      'telefone': telefone,
     };
- }
+  }
 }

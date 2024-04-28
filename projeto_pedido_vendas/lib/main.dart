@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_pedido_vendas/pages/pedido_emitirteste.dart';
+import 'package:projeto_pedido_vendas/pages/pedido_emitir.dart';
+import 'package:projeto_pedido_vendas/util/initialize_database.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDatabase();
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: emitirPedido(),
+    return MaterialApp(
+      home: PedidoEmitirPage(),
     );
   }
 }
