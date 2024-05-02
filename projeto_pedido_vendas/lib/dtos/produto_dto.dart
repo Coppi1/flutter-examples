@@ -7,6 +7,7 @@ class ProdutoDTO {
   String tipoProduto;
   String nome;
   double valor;
+  int quantidade;
 
   ProdutoDTO({
     this.id,
@@ -15,6 +16,7 @@ class ProdutoDTO {
     required this.tipoProduto,
     required this.nome,
     required this.valor,
+    this.quantidade = 1, // Valor padrão
   });
 
   static ProdutoDTO fromProduto(Produto produto) {
@@ -52,6 +54,6 @@ class ProdutoDTO {
 
   @override
   String toString() {
-    return 'ProdutoDTO(id: $id, marca: $marca, unidade: $unidade, tipoProduto: $tipoProduto, nome: $nome, valor: $valor)';
+    return '$quantidade x $nome'; // Exibe a quantidade na frente do nome do produto
   }
 }
